@@ -23,15 +23,16 @@ def main() -> None:
         help="User prompt"
     )
     args = parser.parse_args()
-
-    response = client.chat.completions.create(
-        model="openrouter/free",
-        messages=[
+    messages=[
     {
         "role": "user",
         "content": args.user_prompt,
     }
 ]
+
+    response = client.chat.completions.create(
+        model="openrouter/free",
+        messages=messages
     )
     if not response.usage:
         raise RuntimeError("failed API request, please try again")
