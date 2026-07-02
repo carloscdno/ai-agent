@@ -22,6 +22,11 @@ def main() -> None:
         type=str,
         help="User prompt"
     )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Enable verbose output"
+    )
     args = parser.parse_args()
     messages=[
     {
@@ -37,12 +42,14 @@ def main() -> None:
     if not response.usage:
         raise RuntimeError("failed API request, please try again")
     
-    print(f"User prompt: {args.user_prompt}")
-    print(f"Prompt tokens: {response.usage.prompt_tokens}")
-    print(f"Response tokens: {response.usage.completion_tokens}")
-    print("Response:")
-    print(response.choices[0].message.content)
-    
+    if args.verbose:
+        print(f"User prompt: {args.user_prompt}")
+        print(f"Prompt tokens: {response.usage.prompt_tokens}")
+        print(f"Response tokens: {response.usage.completion_tokens}")
+        print("Response:")
+        print(response.choices[0].message.content)
+    else:
+        print(response.choices[0].message.content)
 
 if __name__ == "__main__":
     main()
