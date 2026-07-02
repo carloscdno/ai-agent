@@ -22,6 +22,12 @@ def main() -> None:
     }
 ]
     )
+    if not response.usage:
+        raise RuntimeError("failed API request, please try again")
+    
+    print(f"Prompt tokens: {response.usage.prompt_tokens}")
+    print(f"Response tokens: {response.usage.completion_tokens}")
+    print("Response:")
     print(response.choices[0].message.content)
     
 
