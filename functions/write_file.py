@@ -20,9 +20,7 @@ def write_file(working_directory: str, file_path: str, content: str) -> str:
         # Writing the file
         with open(target_file, "w") as f:
             f.write(content)
-        
-        if os.path.exists(target_file):
-            print(f"Created file: {target_file}")
+            return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'
             
     except Exception as e:
         return f"Error: {e}"
