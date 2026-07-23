@@ -1,6 +1,24 @@
 import os
 from config import MAX_CHARS
 
+schema_get_file_content = {
+    "type": "function",
+    "function": {
+        "name": "get_file_content",
+        "description": "Reads file content in a specified file path, and if it's over a max of characters it truncates the content",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "File path to read files from",
+                },
+            },
+            "required": ["file_path"]
+        },
+    },
+}
+
 def get_file_content(working_directory: str, file_path: str) -> str:
     absolute_path_wd = os.path.abspath(working_directory)
     target_file = os.path.normpath(os.path.join(absolute_path_wd, file_path))
