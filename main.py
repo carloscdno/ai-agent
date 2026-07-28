@@ -1,11 +1,12 @@
-import os
-import json
 import argparse
+
+import os
+
 
 from dotenv import load_dotenv
 from openai import OpenAI
 from prompts import system_prompt
-from call_function import available_functions
+from call_function import available_functions, call_function
 
 def main() -> None:
     load_dotenv()
@@ -51,20 +52,24 @@ def main() -> None:
     if not response.usage:
         raise RuntimeError("failed API request, please try again")
     
-    message = response.choices[0].message
     if args.verbose:
-        print(f"User prompt: {args.user_prompt}")
-        print(f"Prompt tokens: {response.usage.prompt_tokens}")
-        print(f"Response tokens: {response.usage.completion_tokens}")
+        print("Prompt tokens:", response.usage.prompt_tokens)
+        print("Response tokens:", response.usage.completion_tokens)
+
+    message = response.choices[0].message
+    if not message.tool_calls:
         print("Response:")
-    
-    if message.tool_calls:
-        for tool_call in message.tool_calls:
-            function_args = json.loads(tool_call.function.arguments or "{}")
-            function_name = tool_call.function.name
-            print(f"{function_name}({function_args})")
-    else:
         print(message.content)
+        return
+
+    for tool_call in message.tool_calls:
+        if tool_call.type != "function":
+            continue
+        result_message = call_function(tool_call, args.verbose)
+        if not result_message.get("content"):
+            raise RuntimeError(f"Empty function response for {tool_call.function.name}")
+        if args.verbose:
+            print(f"-> {result_message['content']}")
 
 if __name__ == "__main__":
     main()
