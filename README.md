@@ -20,28 +20,28 @@ such as reading files, listing directories, and writing/fixing code.
 ## Setup
 
 1. Clone the repository:
-   \`\`\`bash
+   ```bash
    git clone https://github.com/carloscdno/ai-agent.git
    cd ai-agent
-   \`\`\`
+   ```
 
 2. Install dependencies with uv:
-   \`\`\`bash
+   ```bash
    uv sync
-   \`\`\`
+   ```
 
 3. Add your OpenRouter API key to a `.env` file:
-   \`\`\`
+   ```
    OPENROUTER_API_KEY=your_key_here
-   \`\`\`
+   ```
 
 ## Usage
 
 Run the agent with a prompt describing the task:
 
-\`\`\`bash
+```bash
 uv run main.py "fix the bug in calculator.py"
-\`\`\`
+```
 
 ## Warning
 
